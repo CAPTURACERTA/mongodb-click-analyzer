@@ -5,6 +5,12 @@ from enum import Enum
 from bson import ObjectId
 
 
+class Collections(Enum):
+    PRODUCTS = "products"
+    USERS = "users"
+    CLICKS = "clicks"
+
+
 class Devices(Enum):
     SMARTPHONE = "Smartphone"
     LAPTOP = "Laptop"
