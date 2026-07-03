@@ -1,4 +1,5 @@
 from dataclasses import asdict
+from typing import Iterable
 
 from pymongo import MongoClient
 from pymongo.database import Database
@@ -38,6 +39,10 @@ def get_database() -> Database:
 
 def find_all(db: Database, collection: Collections) -> list[dict]:
     return list(db[collection].find({}))
+
+
+def insert_many(db: Database, collection: Collections, data: Iterable[dict]):
+    db[collection].insert_many(data)
 
 
 _init_database(get_database())

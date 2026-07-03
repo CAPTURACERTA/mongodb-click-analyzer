@@ -1,11 +1,10 @@
-from src.database import find_all, get_database
-from src.models import Collections
+from src.click_service import generate_and_store_clicks
+from src.database import get_database
 
 
 def main():
     db = get_database()
-    for record in find_all(db, Collections.PRODUCTS.value):
-        print(record)
+    generate_and_store_clicks(db)
 
 
 if __name__ == "__main__":
