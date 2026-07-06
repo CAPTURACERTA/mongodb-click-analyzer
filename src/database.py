@@ -10,7 +10,7 @@ from .models import Collections
 from .seed import generate_products, generate_users
 
 
-def _init_database(db: Database, init_records: int = 10):
+def init_database(db: Database, init_records: int = 10):
     products = db[Collections.PRODUCTS.value]
     if products.count_documents({}) == 0:
         products_records = [
@@ -24,11 +24,11 @@ def _init_database(db: Database, init_records: int = 10):
         users.insert_many(users_records)
 
 
-def get_database() -> Database:
+def get_database(name: str = DB_NAME) -> Database:
     try:
         client = MongoClient(URI, serverSelectionTimeoutMS=2000)
 
-        db = client[DB_NAME]
+        db = client[name]
         return db
 
     except ServerSelectionTimeoutError:
@@ -43,6 +43,3 @@ def find_all(db: Database, collection: Collections) -> list[dict]:
 
 def insert_many(db: Database, collection: Collections, data: Iterable[dict]):
     db[collection].insert_many(data)
-
-
-_init_database(get_database())

@@ -41,3 +41,25 @@ def get_hot_products(db: Database, limit: int = 5) -> list[dict]:
         )
 
     return hot_products
+
+
+def get_hot_devices(db: Database, limit: int = 5) -> list[dict]:
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$device",
+                "click_count": {"$sum": 1},
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "device": "$_id",
+                "click_count": 1,
+            }
+        },
+        {"$sort": {"click_count": -1}},
+        {"$limit": limit},
+    ]
+    hot_devices = list(db[Collections.CLICKS.value].aggregate(pipeline))
+    return hot_devices
